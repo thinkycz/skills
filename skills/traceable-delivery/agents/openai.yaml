@@ -1,0 +1,4 @@
+interface:
+  display_name: "Traceable Delivery"
+  short_description: "Keep delivery progress visible in docs"
+  default_prompt: "Use $traceable-delivery to keep this multi-step implementation traceable through phased docs, progress tracking, blockers, and verification evidence."

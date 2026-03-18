@@ -1,0 +1,92 @@
+---
+name: "skill-maintenance-and-validation"
+description: "Use when creating, updating, or reviewing skills that need to stay linted, internally consistent, reference-safe, and realistically testable."
+---
+
+# Skill Maintenance And Validation
+
+Use this skill to keep existing skills healthy after edits or to harden a newly created skill before relying on it.
+
+This skill is for maintenance, consistency, and validation work on skills themselves. It is not the primary skill for creating a brand-new domain workflow from scratch; use `skill-creator` for that.
+
+## When to Use
+
+Use this skill when the user:
+
+- wants to update an existing skill and avoid drift
+- wants to validate that a skill still matches its metadata and references
+- wants to add or refine skills without breaking routing or handoff behavior
+- wants a repeatable quality pass on a custom skill set
+- hits a validator or environment problem and needs a reliable fallback validation workflow
+
+## Core Workflow
+
+1. Inspect the skill package first.
+   - Read `SKILL.md`, `agents/openai.yaml`, and any referenced files that matter for the change.
+   - Confirm the skill directory shape is intentional and minimal.
+   - Check whether the skill overlaps with or should hand off to another existing skill.
+
+2. Check trigger quality.
+   - Ensure frontmatter `name` and `description` clearly say when the skill should be used.
+   - Ensure the description is specific enough to trigger for the intended tasks without swallowing unrelated work.
+   - Check that the body instructions are consistent with the trigger promise.
+
+3. Check internal consistency.
+   - `agents/openai.yaml` should match the actual skill purpose.
+   - `default_prompt` should mention the skill as `$skill-name`.
+   - Referenced files in `references/`, `scripts/`, or `assets/` should exist and still fit the workflow.
+   - Handoffs to other skills should be intentional, not accidental duplication.
+
+4. Validate progressively.
+   - Run the bundled validator if the local environment supports it.
+   - If the validator is blocked by missing dependencies or environment gaps, perform a manual fallback pass:
+     - check frontmatter shape
+     - check hyphen-case name
+     - check description clarity
+     - check referenced files exist
+     - check `openai.yaml` consistency
+     - check for stale or contradictory instructions
+
+5. Keep the skill lean.
+   - Prefer a concise `SKILL.md` plus targeted references over one bloated instruction file.
+   - Move detailed material into `references/` only when it is truly reusable and only loadable on demand.
+   - Avoid adding extra docs such as README or changelog files.
+
+6. Close with honest validation status.
+   - Say whether validation was tool-based or fallback/manual.
+   - Call out remaining risks such as missing local dependencies, stale references, or overlap with another skill.
+   - Do not claim a skill is fully validated if the validator could not run and fallback checks found unresolved issues.
+
+## Required Outputs
+
+For non-trivial skill maintenance work, produce or update:
+
+- the skill files themselves
+- any necessary references under `references/`
+- `agents/openai.yaml` when the UI-facing metadata is stale
+- a concise closeout note that distinguishes:
+  - validator passed
+  - fallback/manual validation only
+  - known remaining maintenance gaps
+
+## Decision Defaults
+
+Use these defaults unless the user overrides them:
+
+- update existing skills instead of creating duplicates when the scope clearly belongs in one place
+- prefer one primary owner skill plus explicit handoffs over overlapping mega-skills
+- keep `SKILL.md` procedural and concise
+- keep detailed examples or checklists in references
+- run validator-based checks when possible
+- if validator dependencies are missing, do a documented fallback validation instead of pretending validation succeeded
+
+## References
+
+Read these only as needed:
+
+- `references/validation-checklist.md`
+  Use for the standard maintenance and validation checklist.
+- `references/fallback-validation.md`
+  Use when the bundled validator cannot run cleanly.
+- `references/scope-and-overlap.md`
+  Use when deciding whether to update, split, or hand off between skills.

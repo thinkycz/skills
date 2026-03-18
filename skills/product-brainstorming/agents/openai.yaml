@@ -1,0 +1,4 @@
+interface:
+  display_name: "Product Brainstorming"
+  short_description: "Shape features and redesigns"
+  default_prompt: "Use $product-brainstorming to turn this feature or redesign idea into a concise, implementation-ready design doc."

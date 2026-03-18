@@ -1,0 +1,7 @@
+interface:
+  display_name: "Test Driven Development"
+  short_description: "Implement changes from failing tests first"
+  default_prompt: "Use $test-driven-development to express the intended behavior as a failing test first, make the smallest passing change, and leave behind reliable regression protection."
+
+policy:
+  allow_implicit_invocation: true

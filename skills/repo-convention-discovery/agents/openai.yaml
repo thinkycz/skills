@@ -1,0 +1,4 @@
+interface:
+  display_name: "Repo Convention Discovery"
+  short_description: "Inspect repo patterns before planning"
+  default_prompt: "Use $repo-convention-discovery to inspect this repository and summarize the implementation conventions we should follow."
